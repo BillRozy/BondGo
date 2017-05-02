@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Новый Прогноз"
+        android:id="@+id/forecastTitle"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Тут будет инфа о прогнозе"
+        android:id="@+id/forecastDetails"
+        android:layout_below="@+id/forecastTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/forecastDetails"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:id="@+id/linearLayout"
+        android:gravity="center">
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/priceBaField"
+            android:text="105000"
+            android:hint="Базовая цена" />
+
+        <EditText
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/priceStrikeField"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_toEndOf="@+id/forecastDetails"
+            android:layout_marginStart="24dp"
+            android:text="100000"
+            android:hint="Страйк цена" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/linearLayout"
+        android:gravity="center"
+        android:id="@+id/linearLayout2">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/rateOfProftField"
+            android:layout_gravity="center_vertical"
+            android:text="10"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:hint="Ставка доходности"
+            android:enabled="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/maturityTimeField"
+            android:text="364"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:hint="Дней до погашения" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/volatilityField"
+            android:layout_gravity="center_vertical"
+            android:text="10.1"
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:hint="Волатильность" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:id="@+id/submitForecastButton"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="GO!"/>
+
+</RelativeLayout>
