@@ -7,7 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -18,11 +24,13 @@ public class ForecastView extends View{
     static final private float ARROW_SIZE = 50;
     static final private float AXIS_WEIGHT = 5;
     static final private float POLYLINE_WEIGHT = 4;
-    static final private float TEXT_SIZE = 14;
+    static final private float TEXT_SIZE = 18;
+    static final private float MEDIUM_TEXT_SIZE = 24;
     static final private int INTERVALS = 5;
     static final private int INTERVAL_SIZE = 10;
     static final private Paint mAxisPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     static final private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    static final private Paint mMediumTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     static final private Paint mArrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private int xSteps = 0;
@@ -34,6 +42,7 @@ public class ForecastView extends View{
 
     private int viewWidth = 1;
     private int viewHeight = 1;
+    private int mActionBarOffset = 0;
 
     private float mMaxX = 0;
     private float mMinX = 0;
@@ -64,7 +73,10 @@ public class ForecastView extends View{
         mArrowPaint.setStyle(Paint.Style.FILL);
 
         mTextPaint.setColor(Color.BLACK);
-        mTextPaint.setTextSize(14);
+        mTextPaint.setTextSize(TEXT_SIZE);
+
+        mMediumTextPaint.setColor(Color.BLACK);
+        mMediumTextPaint.setTextSize(MEDIUM_TEXT_SIZE);
     }
 
     public void prepareToDrawCurves(float startX, float endX, float startY, float endY){
@@ -81,8 +93,9 @@ public class ForecastView extends View{
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        viewHeight = h;
         viewWidth = w;
+        viewHeight = h - mActionBarOffset;
+        System.out.println("onSize: " + w + " , " + h);
     }
 
     public void createPolyline(float[] x, float[] y, String name, int color){
@@ -94,9 +107,44 @@ public class ForecastView extends View{
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int desiredWidth = 100;
+        int desiredHeight = 100;
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int width;
+        int height;
+
+        //Measure Width
+        if (widthMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            width = Math.min(desiredWidth, widthSize);
+        } else {
+            //Be whatever you want
+            width = desiredWidth;
+        }
+
+        //Measure Height
+        if (heightMode == MeasureSpec.EXACTLY) {
+            //Must be this size
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            //Can't be bigger than...
+            height = Math.min(desiredHeight, heightSize);
+        } else {
+            //Be whatever you want
+            height = desiredHeight;
+        }
+
+        //MUST CALL THIS
         setMeasuredDimension(width, height);
+        System.out.println("MeasuredSize: " + width + " , " + height);
     }
 
     @Override
@@ -134,9 +182,11 @@ public class ForecastView extends View{
     private void drawAxis(Canvas canvas){
         // draw x axis
         canvas.drawLine(PADDING, viewHeight -  PADDING, viewWidth - PADDING, viewHeight - PADDING, mAxisPaint);
+        canvas.drawText(xLegend,viewWidth - PADDING - ARROW_SIZE * 2, viewHeight -  PADDING + ARROW_SIZE / 2 + 20 * 2, mMediumTextPaint);
 
         // draw y axis
         canvas.drawLine(PADDING, viewHeight -  PADDING, PADDING, PADDING, mAxisPaint);
+        canvas.drawText(yLegend, PADDING - ARROW_SIZE / 2 - 20 * 2, PADDING - ARROW_SIZE, mMediumTextPaint);
 
         Path arrow = createArrow(ARROW_SIZE);
         canvas.save();
@@ -158,6 +208,24 @@ public class ForecastView extends View{
         path.lineTo(size/2, size/2);
         path.close();
         return  path;
+    }
+
+    public void setAxisLegend(String xLeg, String yLeg){
+        xLegend = xLeg;
+        yLegend = yLeg;
+    }
+
+    public void setActionBarFix(int px){
+        mActionBarOffset = px;
+    }
+
+
+    public ArrayList<PlotLegendItem> generateLegendItems(){
+        ArrayList<PlotLegendItem> items = new ArrayList<>();
+        for(PlotPolyline p : mPolylines){
+            items.add(p.generateLegendItem());
+        }
+        return items;
     }
 
     private class PlotPolyline {
@@ -186,6 +254,10 @@ public class ForecastView extends View{
             }
             canvas.drawPath(path, mPaint);
         }
+
+        PlotLegendItem generateLegendItem(){
+            return new PlotLegendItem(mColor, mLegend);
+        }
     }
 
     private class PlotPoint{
@@ -212,5 +284,89 @@ public class ForecastView extends View{
         public void draw(Canvas canvas, float wFactor, float hFactor){
             canvas.drawCircle(mX * wFactor + PADDING, -mY * hFactor + viewHeight - PADDING, mRadius,  mPaint);
         }
+    }
+
+    public class PlotLegendItem{
+
+        private int mColor;
+        private String mLabel;
+
+        public PlotLegendItem(int color, String label){
+            mColor = color;
+            mLabel = label;
+        }
+
+        public int getColor() {
+            return mColor;
+        }
+
+        public String getLabel() {
+            return mLabel;
+        }
+    }
+}
+
+class PlotLegendAdapter extends BaseAdapter {
+    Context ctx;
+    LayoutInflater lInflater;
+    ArrayList<ForecastView.PlotLegendItem> objects;
+
+    PlotLegendAdapter(Context context, ArrayList<ForecastView.PlotLegendItem> legends) {
+        ctx = context;
+        objects = legends;
+        lInflater = (LayoutInflater) ctx
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    // кол-во элементов
+    @Override
+    public int getCount() {
+        return objects.size();
+    }
+
+    // элемент по позиции
+    @Override
+    public Object getItem(int position) {
+        return objects.get(position);
+    }
+
+    // id по позиции
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    // пункт списка
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // используем созданные, но не используемые view
+        View view = convertView;
+        if (view == null) {
+            view = lInflater.inflate(R.layout.plot_legend_item, parent, false);
+        }
+
+        ForecastView.PlotLegendItem p = getPlotLegendItem(position);
+
+        // заполняем View в пункте списка данными из товаров: наименование, цена
+        // и картинка
+        ((TextView) view.findViewById(R.id.legendLabelField)).setText(p.getLabel());
+        ((ImageView) view.findViewById(R.id.legendColorField)).setBackgroundColor(p.getColor());
+        return view;
+    }
+
+    // товар по позиции
+    ForecastView.PlotLegendItem getPlotLegendItem(int position) {
+        return ((ForecastView.PlotLegendItem) getItem(position));
+    }
+}
+
+class PlotLegend extends ListView{
+
+    public PlotLegend(Context context){
+        this(context, null);
+    }
+
+    public PlotLegend(Context context, AttributeSet attrs){
+        super(context, attrs);
     }
 }

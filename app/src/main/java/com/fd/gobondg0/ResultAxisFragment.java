@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fd.gobondg0.utils.Utils;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +24,8 @@ public class ResultAxisFragment extends ResultDetailedActivity.ResultFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_result_axis, container, false);
         ForecastView graphicalCanvas = (ForecastView) rootView.findViewById(R.id.forecastGraphics);
+        graphicalCanvas.setActionBarFix(Utils.dpToPx(48, mContext));
+        PlotLegend legendary = (PlotLegend) rootView.findViewById(R.id.legendGraphics);
         float maturity = mContext.getMaturity();
         float[] prices = mContext.getPrices();
         float[] calls = mContext.getCallsForecast();
@@ -39,6 +43,9 @@ public class ResultAxisFragment extends ResultDetailedActivity.ResultFragment {
         float[] putsMaxMin = maxAndMin(puts);
         float[] TsMaxMin = maxAndMin(Ts);
         graphicalCanvas.prepareToDrawCurves(TsMaxMin[1], TsMaxMin[0], Math.min(callsMaxMin[1], putsMaxMin[1]), Math.max(callsMaxMin[0], putsMaxMin[0]));
+        graphicalCanvas.setAxisLegend("Maturity, years", "Price, $");
+        PlotLegendAdapter adapter = new PlotLegendAdapter(mContext, graphicalCanvas.generateLegendItems());
+        legendary.setAdapter(adapter);
 
         return rootView;
     }
