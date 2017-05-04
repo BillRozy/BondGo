@@ -33,10 +33,6 @@ public class ForecastView extends View{
     static final private Paint mMediumTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     static final private Paint mArrowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private int xSteps = 0;
-    private int ySteps = 0;
-    private int xStep = 0;
-    private int yStep = 0;
     private String xLegend = "X Axis";
     private String yLegend = "Y Axis";
 

@@ -1,5 +1,7 @@
 package com.fd.gobondg0;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -15,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.fd.gobondg0.db.ForecastReaderContract;
+import com.fd.gobondg0.db.ForecastsReaderDbHelper;
 
 public class ResultDetailedActivity extends AppCompatActivity {
 
@@ -70,6 +76,37 @@ public class ResultDetailedActivity extends AppCompatActivity {
             mPutsForecast = extras.getFloatArray("put-forecast");
             mMaturity = extras.getFloat("maturity");
         }
+
+        SQLiteDatabase db = (new ForecastsReaderDbHelper(this)).getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                ForecastReaderContract.CurveEntry._ID,
+                ForecastReaderContract.CurveEntry.CURVE_NAME,
+                ForecastReaderContract.CurveEntry.CURVE_COLOR
+        };
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                ForecastReaderContract.CurveEntry.CURVE_NAME + " DESC";
+
+        Cursor c = db.query(
+                ForecastReaderContract.CurveEntry.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        c.moveToFirst();
+        long itemId = c.getLong(
+                c.getColumnIndexOrThrow(ForecastReaderContract.CurveEntry._ID)
+        );
+        String name = c.getString(c.getColumnIndexOrThrow(ForecastReaderContract.CurveEntry.CURVE_NAME));
+        Toast.makeText(this, "Got: " + name + " , " + itemId, Toast.LENGTH_LONG).show();
 
     }
 
