@@ -45,11 +45,6 @@ public class CalculatorActivity extends Activity {
         mVolatilityField = (EditText) findViewById(R.id.volatilityField);
         mRateField = (EditText) findViewById(R.id.rateOfProftField);
         mGoBond = (Button) findViewById(R.id.submitForecastButton);
-        if(forecastType.equals("BS")){
-            mRateField.setEnabled(false);
-        }else{
-            mRateField.setEnabled(true);
-        }
 
         mGoBond.setOnClickListener(new View.OnClickListener() {
             @Override

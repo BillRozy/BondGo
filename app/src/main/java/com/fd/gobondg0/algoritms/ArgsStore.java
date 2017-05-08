@@ -9,4 +9,8 @@ public interface ArgsStore {
     double getVolatility();
     double getProfitRate();
     double getDividentsYield();
+    double getKr();
+    double getMur();
+    double getSigmar();
+    double getRo();
 }

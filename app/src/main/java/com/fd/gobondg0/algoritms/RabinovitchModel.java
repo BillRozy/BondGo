@@ -1,7 +1,6 @@
 package com.fd.gobondg0.algoritms;
 
-
-public class MertonModel extends CalculationModel {
+public class RabinovitchModel extends CalculationModel {
 
     @Override
     public void setArgsStore(ArgsStore store) {
@@ -16,12 +15,12 @@ public class MertonModel extends CalculationModel {
     @Override
     public float[] calculateParity(double T, int type) throws NullPointerException{
         if(mArgsStore != null) {
-            double t = mArgsStore.getMaturity();
+            double tau = mArgsStore.getMaturity();
             double vola = mArgsStore.getVolatility();
             double ba = mArgsStore.getBasicPrice();
             switch (type){
                 case PriceCalculator.FOR_MATURITY:
-                    t = T;
+                    tau = T;
                     break;
                 case PriceCalculator.FOR_VOLATILITY:
                     vola = T;
@@ -32,21 +31,31 @@ public class MertonModel extends CalculationModel {
             }
             float[] parity = new float[2];
             double s = mArgsStore.getStrikePrice();
-            double r = mArgsStore.getProfitRate();
+            double r0 = mArgsStore.getProfitRate();
             double q = mArgsStore.getDividentsYield();
-            double d1 = (Math.log(ba / s) + (r - q + vola * vola / 2) * t)/ (vola * Math.sqrt(t));
-            double d2 = d1 - vola * Math.pow(t, 0.5);
+            double kr = mArgsStore.getKr();
+            double mur = mArgsStore.getMur();
+            double sigmar = mArgsStore.getSigmar();
+            double ro = mArgsStore.getRo();
+
+
+            double k = mur + sigmar * MARKET_RISK_RATE / kr - Math.pow(sigmar/kr, 2)/kr;
+            double B = (1 - Math.exp(-kr * tau))/kr;
+            double A = Math.exp(k * (B - tau) - Math.pow(sigmar * B / 2, 2) / 2);
+            double P = A * Math.exp(-r0 * B);
+
+            double Tfun = vola * vola * tau + (tau - 2 * B + (1 - Math.exp(-2 * kr * tau))/2*kr) * Math.pow(sigmar/kr, 2) - 2 * ro * vola * (tau - B) * sigmar/kr;
+
+
+
+            double d1 = (Math.log(ba/s * P) + Tfun/2)/Math.sqrt(Tfun);
+            double d2 = d1 - Math.sqrt(Tfun);
             double nD1 = PriceCalculator.getStandRaspObr(d1);
             double nD2 = PriceCalculator.getStandRaspObr(d2);
             double nD11 = PriceCalculator.getStandRaspObr(-d1);
             double nD22 = PriceCalculator.getStandRaspObr(-d2);
-            double delta = Math.exp(-(q * t)) * nD1;
-            double gama = Math.exp(-(q * t)) * nD1/(ba * vola * Math.sqrt(t));
-            double vega = ba * Math.exp(-(q * t)) * nD1 * Math.sqrt(t);
-            double theta = - ((ba * Math.exp(-(q * t)) * nD1 * vola)/2 * Math.sqrt(t)) - q * ba * Math.exp(-(q * t)) * nD1 - r * s * Math.exp(-(r * t)) * nD2;
-            double rho = t * s * Math.exp(-(r * t)) * nD2;
-            parity[0] = (float)  (ba * Math.exp(-(q * t)) * nD1 - s * Math.exp(-(r * t)) * nD2);
-            parity[1] = (float) (s * Math.exp(-(r * t)) * nD22 - ba * Math.exp(-(q * t)) * nD11);
+            parity[0] = (float)  (ba * nD1 - s * P * nD2);
+            parity[1] = (float) (s * P * nD22 - ba * nD11);
             return parity;
         }else{
             throw new NullPointerException();

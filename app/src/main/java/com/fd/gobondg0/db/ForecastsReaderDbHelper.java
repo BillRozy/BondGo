@@ -168,4 +168,9 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
         // Issue SQL statement.
         return (db.delete(ForecastReaderContract.ForecastEntry.TABLE_NAME, selection, selectionArgs) > 0);
     }
+
+    static public boolean deleteAllForecastEntries(SQLiteDatabase db){
+        db.execSQL("DELETE FROM " + ForecastReaderContract.ForecastEntry.TABLE_NAME);
+        return true;
+    }
 }

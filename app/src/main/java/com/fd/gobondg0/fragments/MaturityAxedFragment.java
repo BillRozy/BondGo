@@ -35,8 +35,8 @@ public class MaturityAxedFragment extends AxedFragment {
     protected void prepareData() {
         forecastVar = mContext.getMaturity();
         prices = mContext.getPrices();
-        calls = mContext.getCallsVolaForecast();
-        puts = mContext.getPutsVolaForecast();
+        calls = mContext.getCallsMaturityForecast();
+        puts = mContext.getPutsMaturityForecast();
         axisLegend = new String[]{"Maturity, years", "Price, $"};
     }
 }

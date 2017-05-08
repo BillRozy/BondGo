@@ -145,9 +145,9 @@
                     android:id="@+id/rateOfProftField"
                     android:text="5"
                     android:hint="Ставка доходности"
-                    android:enabled="false"
                     android:gravity="center"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:background="#eeecec" />
 
                 <TextView
                     android:layout_width="100dp"

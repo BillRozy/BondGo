@@ -116,15 +116,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//        ForecastEntity current = mForecastsAdapter.getForecastItem(position - 1);
-//        ForecastsReaderDbHelper mDbHelper = new ForecastsReaderDbHelper(this);
-//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//        ForecastsReaderDbHelper.deleteForecastEntry(current, db);
-//        db = mDbHelper.getReadableDatabase();
-//        ArrayList<ForecastEntity> forecasts = ForecastsReaderDbHelper.fetchForecastEntities(db);
-//        mForecastsAdapter.clear();
-//        mForecastsAdapter.addAll(forecasts);
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {;
         deleteEntryDialog(position);
         return true;
     }
@@ -171,7 +163,12 @@ public class MainActivity extends AppCompatActivity
             Intent starterCalculator = new Intent(MainActivity.this, CalculatorActivity.class);
             startActivity(starterCalculator);
         } else if (id == R.id.forecast_history) {
-
+            ForecastsReaderDbHelper mDbHelper = new ForecastsReaderDbHelper(MainActivity.this);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            mForecastsAdapter.clear();
+            if(ForecastsReaderDbHelper.deleteAllForecastEntries(db)) {
+                Toast.makeText(this, "История очищена успешно", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.app_settings) {
 
         }

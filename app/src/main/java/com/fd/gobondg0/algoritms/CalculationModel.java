@@ -3,6 +3,8 @@ package com.fd.gobondg0.algoritms;
 
 public abstract class CalculationModel {
 
+
+    public static double MARKET_RISK_RATE = 1;
     protected ArgsStore mArgsStore;
 
     public void setArgsStore(ArgsStore store){
@@ -19,6 +21,8 @@ public abstract class CalculationModel {
                 return new BlackScholesModel();
             case "Merton":
                 return new MertonModel();
+            case "Rabinovitch":
+                return new RabinovitchModel();
             default:
                 return new BlackScholesModel();
         }

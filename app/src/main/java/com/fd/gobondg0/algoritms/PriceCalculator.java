@@ -20,8 +20,13 @@ public class PriceCalculator implements ArgsStore{
     private double mStrikePrice = 0;
     private double mMaturity = 0;
     private double mVolatility = 0;
-    private double mProfitRate = 0;
+    private double mProfitRate = 0.05;
     private double mDividentsYield = 0.001;
+    private double mKr = 2;
+    private double mMur = 0.001;
+    private double mSigmar = 0.1;
+    private double mRo = 0.2;
+
     private CalculationModel mCurrentModel;
 
     public PriceCalculator(CalculationModel model){
@@ -121,4 +126,19 @@ public class PriceCalculator implements ArgsStore{
         return new NormalDistribution().cumulativeProbability(z);
    }
 
+    public double getKr() {
+        return mKr;
+    }
+
+    public double getMur() {
+        return mMur;
+    }
+
+    public double getSigmar() {
+        return mSigmar;
+    }
+
+    public double getRo() {
+        return mRo;
+    }
 }
