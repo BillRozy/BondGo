@@ -23,18 +23,33 @@ public class CalculatorActivity extends Activity {
     private EditText mStrikeField;
     private EditText mMaturityField;
     private EditText mVolatilityField;
+    private EditText mRateField;
     private Button mGoBond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calculator_activity);
+        final String forecastType;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            forecastType = extras.getString("model");
+        }else{
+            forecastType = "BS";
+        }
+
 
         mBaField = (EditText) findViewById(R.id.priceBaField);
         mStrikeField = (EditText) findViewById(R.id.priceStrikeField);
         mMaturityField = (EditText) findViewById(R.id.maturityTimeField);
         mVolatilityField = (EditText) findViewById(R.id.volatilityField);
+        mRateField = (EditText) findViewById(R.id.rateOfProftField);
         mGoBond = (Button) findViewById(R.id.submitForecastButton);
+        if(forecastType.equals("BS")){
+            mRateField.setEnabled(false);
+        }else{
+            mRateField.setEnabled(true);
+        }
 
         mGoBond.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,18 +58,21 @@ public class CalculatorActivity extends Activity {
                 double s = Double.parseDouble(mStrikeField.getText().toString());
                 double t = Double.parseDouble(mMaturityField.getText().toString());
                 double vola = Double.parseDouble(mVolatilityField.getText().toString());
+                double q = Double.parseDouble(mRateField.getText().toString());
+                double r = Double.parseDouble(mRateField.getText().toString());
                 ForecastsReaderDbHelper mDbHelper = new ForecastsReaderDbHelper(CalculatorActivity.this);
                 SQLiteDatabase db = mDbHelper.getWritableDatabase();
                 SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String dateString = fmt.format(new Date());
-                ForecastEntity entity = new ForecastEntity("Users", "BS", dateString, (float) vola, (float) t, (float) ba, (float) s);
+                ForecastEntity entity = new ForecastEntity("Users", forecastType, dateString, (float) vola, (float) t, (float) ba, (float) s, (float) r, (float) q);
                 ForecastsReaderDbHelper.saveForecastEntity(entity, db);
-                CalculationModel bs = new BlackScholesModel();
+                CalculationModel bs = CalculationModel.createCalculationModel(forecastType);
                 PriceCalculator pc = new PriceCalculator(bs);
                 pc.setMaturity(t);
                 pc.setVolatility(vola);
                 pc.setBasicPrice(ba);
                 pc.setStrikePrice(s);
+                pc.setProfitRate(r);
                 pc.performCalculation(PriceCalculator.FOR_MATURITY);
                 ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
                 ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);

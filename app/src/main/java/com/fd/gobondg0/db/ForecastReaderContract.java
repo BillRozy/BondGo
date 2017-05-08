@@ -30,6 +30,8 @@ public class ForecastReaderContract {
         public static final String FORECAST_VOLATILITY = "forecast_volatility";
         public static final String FORECAST_BASIC_PRICE = "forecast_basic_price";
         public static final String FORECAST_STRIKE_PRICE = "forecast_strike_price";
+        public static final String FORECAST_INTEREST_RATE = "forecast_interest_rate";
+        public static final String FORECAST_DIVIDENDS_YIELD = "forecast_dividends_yield";
     }
 
     /* Inner class that defines the table contents */

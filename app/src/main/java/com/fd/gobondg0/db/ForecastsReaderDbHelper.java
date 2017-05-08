@@ -30,7 +30,9 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
                     ForecastReaderContract.ForecastEntry.FORECAST_MATURITY + FLOAT_TYPE + COMMA_SEP +
                     ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY + FLOAT_TYPE + COMMA_SEP +
                     ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE + FLOAT_TYPE + COMMA_SEP +
-                    ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE + FLOAT_TYPE +
+                    ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE + FLOAT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE + FLOAT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD + FLOAT_TYPE +
             " );";
     private static final String SQL_CREATE_CURVE_TABLE =
             "CREATE TABLE " + ForecastReaderContract.CurveEntry.TABLE_NAME + " (" +
@@ -101,7 +103,9 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
                 ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE,
                 ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE,
                 ForecastReaderContract.ForecastEntry.FORECAST_MATURITY,
-                ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY
+                ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY,
+                ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE,
+                ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD
         };
 
 // How you want the results sorted in the resulting Cursor
@@ -127,7 +131,9 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
             float s = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE));
             float t = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY));
             float vola = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY));
-            res.add(new ForecastEntity(name,type,date, vola, t ,ba, s));
+            Float r = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE));
+            Float q = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD));
+            res.add(new ForecastEntity(name,type,date, vola, t ,ba, s, r, q));
         }
         return res;
     }
@@ -142,6 +148,8 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
         values.put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, entity.getVolatility());
         values.put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, entity.getBasicPrice());
         values.put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, entity.getStrikePrice());
+        values.put(ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE, entity.getInterestRate());
+        values.put(ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD, entity.getDividentsYield());
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId;

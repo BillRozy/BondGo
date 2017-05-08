@@ -1,6 +1,7 @@
 package com.fd.gobondg0;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -49,8 +51,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent starterCalculator = new Intent(MainActivity.this, CalculatorActivity.class);
-                startActivity(starterCalculator);
+                chooseModelDialog();
             }
         });
 
@@ -88,12 +89,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ForecastEntity current = mForecastsAdapter.getForecastItem(position - 1);
-        CalculationModel bs = new MertonModel();
+        CalculationModel bs = CalculationModel.createCalculationModel(current.getType());
         PriceCalculator pc = new PriceCalculator(bs);
         pc.setMaturity(current.getMaturity());
         pc.setVolatility(current.getVolatility());
         pc.setBasicPrice(current.getBasicPrice());
         pc.setStrikePrice(current.getStrikePrice());
+        pc.setProfitRate(current.getInterestRate());
         pc.performCalculation(PriceCalculator.FOR_MATURITY);
         ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
         ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);
@@ -207,6 +209,50 @@ public class MainActivity extends AppCompatActivity
             }
         });
         ad.show();
+    }
+
+    public void chooseModelDialog(){
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.choose_model_dialog);
+        dialog.setTitle("Выберите модель:");
+
+        // set the custom dialog components - text, image and button
+
+        Button bsBtn = (Button) dialog.findViewById(R.id.bsChosenBtn);
+        Button mertonBtn = (Button) dialog.findViewById(R.id.mertonChosenBtn);
+        Button rabiBtn = (Button) dialog.findViewById(R.id.rabiChosenBtn);
+        final Intent starterCalculator = new Intent(MainActivity.this, CalculatorActivity.class);
+        // if button is clicked, close the custom dialog
+        bsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starterCalculator.putExtra("model", "BS");
+                dialog.dismiss();
+                startActivity(starterCalculator);
+
+            }
+        });
+
+        mertonBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starterCalculator.putExtra("model", "Merton");
+                dialog.dismiss();
+                startActivity(starterCalculator);
+            }
+        });
+
+        rabiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starterCalculator.putExtra("model", "Rabinovitch");
+                dialog.dismiss();
+                startActivity(starterCalculator);
+            }
+        });
+
+        dialog.show();
     }
 
 }

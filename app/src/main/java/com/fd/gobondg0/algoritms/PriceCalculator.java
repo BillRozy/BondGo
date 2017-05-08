@@ -106,7 +106,7 @@ public class PriceCalculator implements ArgsStore{
     }
 
     public void setProfitRate(double mProfitRate) {
-        this.mProfitRate = mProfitRate;
+        this.mProfitRate = mProfitRate/100;
     }
 
     public double getDividentsYield() {

@@ -9,8 +9,10 @@ public class ForecastEntity {
     private float mMaturity;
     private float mBasicPrice;
     private float mStrikePrice;
+    private Float mInterestRate;
+    private Float mDividentsYield;
 
-    public ForecastEntity(String name, String type, String date, float vola, float t, float ba, float s){
+    public ForecastEntity(String name, String type, String date, float vola, float t, float ba, float s, Float r, Float q ){
         mName = name;
         mType = type;
         mDate = date;
@@ -18,6 +20,8 @@ public class ForecastEntity {
         mMaturity = t;
         mBasicPrice = ba;
         mStrikePrice = s;
+        mInterestRate = r;
+        mDividentsYield = q;
     }
 
     public String getName() {
@@ -46,5 +50,13 @@ public class ForecastEntity {
 
     public float getStrikePrice() {
         return mStrikePrice;
+    }
+
+    public Float getInterestRate() {
+        return mInterestRate;
+    }
+
+    public Float getDividentsYield() {
+        return mDividentsYield;
     }
 }

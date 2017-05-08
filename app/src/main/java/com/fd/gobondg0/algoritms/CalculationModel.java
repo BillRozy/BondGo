@@ -13,4 +13,15 @@ public abstract class CalculationModel {
 
     abstract public float[] calculateParity(double T, int type) throws NullPointerException;
 
+    static public CalculationModel createCalculationModel(String type){
+        switch(type){
+            case "BS":
+                return new BlackScholesModel();
+            case "Merton":
+                return new MertonModel();
+            default:
+                return new BlackScholesModel();
+        }
+    }
+
 }
