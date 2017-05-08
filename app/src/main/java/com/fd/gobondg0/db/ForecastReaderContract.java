@@ -10,15 +10,26 @@ public class ForecastReaderContract {
     public ForecastReaderContract() {}
 
     /* Inner class that defines the table contents */
-    public static abstract class ForecastEntry implements BaseColumns {
+//    public static abstract class ForecastEntry implements BaseColumns {
+//        public static final String TABLE_NAME = "forecast";
+//        public static final String FORECAST_NAME = "forecast_name";
+//        public static final String FORECAST_TYPE = "forecast_type";
+//        public static final String FORECAST_TIMESTAMP = "forecast_timestamp";
+//        public static final String FORECAST_CURVES_IDS = "forecast_curves_ids";
+//        public static final String FORECAST_POINTS_IDS = "forecast_points_ids";
+//        public static final String FORECAST_AXIS_X = "forecast_axis_x";
+//        public static final String FORECAST_AXIS_Y = "forecast_axis_y";
+//    }
+
+        public static abstract class ForecastEntry implements BaseColumns {
         public static final String TABLE_NAME = "forecast";
         public static final String FORECAST_NAME = "forecast_name";
         public static final String FORECAST_TYPE = "forecast_type";
         public static final String FORECAST_TIMESTAMP = "forecast_timestamp";
-        public static final String FORECAST_CURVES_IDS = "forecast_curves_ids";
-        public static final String FORECAST_POINTS_IDS = "forecast_points_ids";
-        public static final String FORECAST_AXIS_X = "forecast_axis_x";
-        public static final String FORECAST_AXIS_Y = "forecast_axis_y";
+        public static final String FORECAST_MATURITY = "forecast_maturity";
+        public static final String FORECAST_VOLATILITY = "forecast_volatility";
+        public static final String FORECAST_BASIC_PRICE = "forecast_basic_price";
+        public static final String FORECAST_STRIKE_PRICE = "forecast_strike_price";
     }
 
     /* Inner class that defines the table contents */

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical|start"
+    android:padding="5dp"
+    android:minHeight="80dp"
+    android:background="#9e9e9e">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="TYPE"
+        android:id="@+id/forecastType"
+        android:textAlignment="gravity"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_weight="8"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="BASIC PRICE"
+        android:id="@+id/forecastBasicPrice"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="STRIKE PRICE"
+        android:id="@+id/forecastStrikePrice"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="T"
+        android:id="@+id/forecastMaturity"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="VOLA"
+        android:id="@+id/forecastVolatility"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="DATE"
+        android:id="@+id/forecastCreatedAt"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:minWidth="100dp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical|start"
+    android:padding="5dp"
+    android:minHeight="80dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="BS"
+        android:id="@+id/forecastType"
+        android:textAlignment="gravity"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_weight="8"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="80"
+        android:id="@+id/forecastBasicPrice"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="100"
+        android:id="@+id/forecastStrikePrice"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="364"
+        android:id="@+id/forecastMaturity"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="20.1"
+        android:id="@+id/forecastVolatility"
+        android:layout_weight="8"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:minWidth="60dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="3428394"
+        android:id="@+id/forecastCreatedAt"
+        android:layout_weight="7"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:minWidth="100dp" />
+</LinearLayout>

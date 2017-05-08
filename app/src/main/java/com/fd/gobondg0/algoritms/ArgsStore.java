@@ -8,4 +8,5 @@ public interface ArgsStore {
     double getStrikePrice();
     double getVolatility();
     double getProfitRate();
+    double getDividentsYield();
 }

@@ -1,7 +1,6 @@
 package com.fd.gobondg0;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -17,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.fd.gobondg0.db.ForecastReaderContract;
-import com.fd.gobondg0.db.ForecastsReaderDbHelper;
+import com.astuetz.PagerSlidingTabStrip;
+import com.fd.gobondg0.fragments.BaAxedFragment;
+import com.fd.gobondg0.fragments.MaturityAxedFragment;
+import com.fd.gobondg0.fragments.ResultPricesFragment;
+import com.fd.gobondg0.fragments.VolatilityAxedFragment;
 
 public class ResultDetailedActivity extends AppCompatActivity {
 
@@ -39,9 +40,15 @@ public class ResultDetailedActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private float[] mResultedPrices = new float[2];
-    private float[] mCallsForecast;
-    private float[] mPutsForecast;
+    private float[] mCallsMaturityForecast;
+    private float[] mPutsMaturityForecast;
+    private float[] mCallsVolaForecast;
+    private float[] mPutsVolaForecast;
+    private float[] mCallsBaForecast;
+    private float[] mPutsBaForecast;
     private float mMaturity;
+    private float mVolatility;
+    private float mBa;
 
     public float[] getPrices(){
         return mResultedPrices;
@@ -56,15 +63,14 @@ public class ResultDetailedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_detailed);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.forecast_tabs);
+        tabs.setViewPager(mViewPager);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -72,72 +78,48 @@ public class ResultDetailedActivity extends AppCompatActivity {
             mResultedPrices[0] = callPrice;
             float putPrice = extras.getFloat("put-price");
             mResultedPrices[1] = putPrice;
-            mCallsForecast = extras.getFloatArray("call-forecast");
-            mPutsForecast = extras.getFloatArray("put-forecast");
+            mCallsMaturityForecast = extras.getFloatArray("call-maturity-forecast");
+            mPutsMaturityForecast = extras.getFloatArray("put-maturity-forecast");
+            mCallsVolaForecast = extras.getFloatArray("call-vola-forecast");
+            mPutsVolaForecast = extras.getFloatArray("put-vola-forecast");
+            mCallsBaForecast = extras.getFloatArray("call-ba-forecast");
+            mPutsBaForecast = extras.getFloatArray("put-ba-forecast");
             mMaturity = extras.getFloat("maturity");
+            mVolatility = extras.getFloat("volatility");
+            mBa = extras.getFloat("ba");
         }
-
-        SQLiteDatabase db = (new ForecastsReaderDbHelper(this)).getReadableDatabase();
-
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
-        String[] projection = {
-                ForecastReaderContract.CurveEntry._ID,
-                ForecastReaderContract.CurveEntry.CURVE_NAME,
-                ForecastReaderContract.CurveEntry.CURVE_COLOR
-        };
-
-// How you want the results sorted in the resulting Cursor
-        String sortOrder =
-                ForecastReaderContract.CurveEntry.CURVE_NAME + " DESC";
-
-        Cursor c = db.query(
-                ForecastReaderContract.CurveEntry.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
-
-        c.moveToFirst();
-        long itemId = c.getLong(
-                c.getColumnIndexOrThrow(ForecastReaderContract.CurveEntry._ID)
-        );
-        String name = c.getString(c.getColumnIndexOrThrow(ForecastReaderContract.CurveEntry.CURVE_NAME));
-        Toast.makeText(this, "Got: " + name + " , " + itemId, Toast.LENGTH_LONG).show();
-
     }
 
-    public float[] getCallsForecast() {
-        return mCallsForecast;
+    public float[] getCallsMaturityForecast() {
+        return mCallsMaturityForecast;
     }
 
-    public float[] getPutsForecast() {
-        return mPutsForecast;
+    public float[] getPutsMaturityForecast() {
+        return mPutsMaturityForecast;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_result_detailed, menu);
-        return true;
+    public float[] getCallsVolaForecast() {
+        return mCallsVolaForecast;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public float[] getPutsVolaForecast() {
+        return mPutsVolaForecast;
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+    public float[] getCallsBaForecast() {
+        return mCallsBaForecast;
+    }
 
-        return super.onOptionsItemSelected(item);
+    public float[] getPutsBaForecast() {
+        return mPutsBaForecast;
+    }
+
+    public float getBa() {
+        return mBa;
+    }
+
+    public float getVolatility() {
+        return mVolatility;
     }
 
     /**
@@ -193,7 +175,11 @@ public class ResultDetailedActivity extends AppCompatActivity {
                 case 0:
                     return new ResultPricesFragment();
                 case 1:
-                    return new ResultAxisFragment();
+                    return new BaAxedFragment();
+                case 2:
+                    return new MaturityAxedFragment();
+                case 3:
+                    return new VolatilityAxedFragment();
                 default:
                     return ResultFragment.newInstance(position + 1);
             }
@@ -202,18 +188,20 @@ public class ResultDetailedActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Ожидаемая цена";
                 case 1:
-                    return "SECTION 2";
+                    return "Относительно BA";
                 case 2:
-                    return "SECTION 3";
+                    return "Относительно срока";
+                case 3:
+                    return "Относительно волатильности ";
             }
             return null;
         }

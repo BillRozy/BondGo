@@ -38,7 +38,6 @@ public class ForecastView extends View{
 
     private int viewWidth = 1;
     private int viewHeight = 1;
-    private int mActionBarOffset = 0;
 
     private float mMaxX = 0;
     private float mMinX = 0;
@@ -90,8 +89,7 @@ public class ForecastView extends View{
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         viewWidth = w;
-        viewHeight = h - mActionBarOffset;
-        System.out.println("onSize: " + w + " , " + h);
+        viewHeight = h;
     }
 
     public void createPolyline(float[] x, float[] y, String name, int color){
@@ -140,7 +138,6 @@ public class ForecastView extends View{
 
         //MUST CALL THIS
         setMeasuredDimension(width, height);
-        System.out.println("MeasuredSize: " + width + " , " + height);
     }
 
     @Override
@@ -211,9 +208,6 @@ public class ForecastView extends View{
         yLegend = yLeg;
     }
 
-    public void setActionBarFix(int px){
-        mActionBarOffset = px;
-    }
 
 
     public ArrayList<PlotLegendItem> generateLegendItems(){
@@ -302,67 +296,6 @@ public class ForecastView extends View{
     }
 }
 
-class PlotLegendAdapter extends BaseAdapter {
-    Context ctx;
-    LayoutInflater lInflater;
-    ArrayList<ForecastView.PlotLegendItem> objects;
 
-    PlotLegendAdapter(Context context, ArrayList<ForecastView.PlotLegendItem> legends) {
-        ctx = context;
-        objects = legends;
-        lInflater = (LayoutInflater) ctx
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
 
-    // кол-во элементов
-    @Override
-    public int getCount() {
-        return objects.size();
-    }
 
-    // элемент по позиции
-    @Override
-    public Object getItem(int position) {
-        return objects.get(position);
-    }
-
-    // id по позиции
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    // пункт списка
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // используем созданные, но не используемые view
-        View view = convertView;
-        if (view == null) {
-            view = lInflater.inflate(R.layout.plot_legend_item, parent, false);
-        }
-
-        ForecastView.PlotLegendItem p = getPlotLegendItem(position);
-
-        // заполняем View в пункте списка данными из товаров: наименование, цена
-        // и картинка
-        ((TextView) view.findViewById(R.id.legendLabelField)).setText(p.getLabel());
-        ((ImageView) view.findViewById(R.id.legendColorField)).setBackgroundColor(p.getColor());
-        return view;
-    }
-
-    // товар по позиции
-    ForecastView.PlotLegendItem getPlotLegendItem(int position) {
-        return ((ForecastView.PlotLegendItem) getItem(position));
-    }
-}
-
-class PlotLegend extends ListView{
-
-    public PlotLegend(Context context){
-        this(context, null);
-    }
-
-    public PlotLegend(Context context, AttributeSet attrs){
-        super(context, attrs);
-    }
-}

@@ -9,8 +9,8 @@ public abstract class CalculationModel {
         mArgsStore = store;
     }
 
-    abstract public float[] calculateParity() throws NullPointerException;
+    abstract public float[] calculateParity(int type) throws NullPointerException;
 
-    abstract public float[] calculateParity(double T) throws NullPointerException;
+    abstract public float[] calculateParity(double T, int type) throws NullPointerException;
 
 }
