@@ -8,11 +8,6 @@ public class BlackScholesModel extends CalculationModel {
     }
 
     @Override
-    public float[] calculateParity(int type) throws NullPointerException{
-        return calculateParity(mArgsStore.getMaturity(), type);
-    }
-
-    @Override
     public float[] calculateParity(double T, int type) throws NullPointerException{
         if(mArgsStore != null) {
             double t = mArgsStore.getMaturity();

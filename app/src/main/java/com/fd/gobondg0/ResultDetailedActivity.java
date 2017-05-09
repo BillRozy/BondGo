@@ -18,10 +18,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.fd.gobondg0.algoritms.CalculationModel;
+import com.fd.gobondg0.algoritms.PriceCalculator;
 import com.fd.gobondg0.fragments.BaAxedFragment;
 import com.fd.gobondg0.fragments.MaturityAxedFragment;
 import com.fd.gobondg0.fragments.ResultPricesFragment;
 import com.fd.gobondg0.fragments.VolatilityAxedFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResultDetailedActivity extends AppCompatActivity {
 
@@ -49,6 +54,7 @@ public class ResultDetailedActivity extends AppCompatActivity {
     private float mMaturity;
     private float mVolatility;
     private float mBa;
+    private Map<String, ForecastResult> mForecastsResults;
 
     public float[] getPrices(){
         return mResultedPrices;
@@ -62,6 +68,10 @@ public class ResultDetailedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_detailed);
+        mForecastsResults = new HashMap<>();
+        mForecastsResults.put("BS", null);
+        mForecastsResults.put("Merton", null);
+        mForecastsResults.put("Rabinovitch", null);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -73,21 +83,40 @@ public class ResultDetailedActivity extends AppCompatActivity {
         tabs.setViewPager(mViewPager);
 
         Bundle extras = getIntent().getExtras();
+        String forecastType = "BS";
         if (extras != null) {
-            float callPrice = extras.getFloat("call-price");
-            mResultedPrices[0] = callPrice;
-            float putPrice = extras.getFloat("put-price");
-            mResultedPrices[1] = putPrice;
-            mCallsMaturityForecast = extras.getFloatArray("call-maturity-forecast");
-            mPutsMaturityForecast = extras.getFloatArray("put-maturity-forecast");
-            mCallsVolaForecast = extras.getFloatArray("call-vola-forecast");
-            mPutsVolaForecast = extras.getFloatArray("put-vola-forecast");
-            mCallsBaForecast = extras.getFloatArray("call-ba-forecast");
-            mPutsBaForecast = extras.getFloatArray("put-ba-forecast");
-            mMaturity = extras.getFloat("maturity");
-            mVolatility = extras.getFloat("volatility");
-            mBa = extras.getFloat("ba");
+            forecastType = extras.getString("forecast-type");
+//            float callPrice = extras.getFloat("call-price");
+//            mResultedPrices[0] = callPrice;
+//            float putPrice = extras.getFloat("put-price");
+//            mResultedPrices[1] = putPrice;
+//            mCallsMaturityForecast = extras.getFloatArray("call-maturity-forecast");
+//            mPutsMaturityForecast = extras.getFloatArray("put-maturity-forecast");
+//            mCallsVolaForecast = extras.getFloatArray("call-vola-forecast");
+//            mPutsVolaForecast = extras.getFloatArray("put-vola-forecast");
+//            mCallsBaForecast = extras.getFloatArray("call-ba-forecast");
+//            mPutsBaForecast = extras.getFloatArray("put-ba-forecast");
+//            mMaturity = extras.getFloat("maturity");
+//            mVolatility = extras.getFloat("volatility");
+//            mBa = extras.getFloat("ba");
         }
+
+        PriceCalculator calculator = BaseApp.getCalculator();
+        if(!forecastType.equals("Triple")) {
+            calculator.setModel(CalculationModel.createCalculationModel(forecastType));
+            mForecastsResults.put(forecastType, calculator.calculateAndReturnFullResult());
+        }else{
+            calculator.setModel(CalculationModel.createCalculationModel("BS"));
+            mForecastsResults.put("BS", calculator.calculateAndReturnFullResult());
+            calculator.setModel(CalculationModel.createCalculationModel("Merton"));
+            mForecastsResults.put("Merton", calculator.calculateAndReturnFullResult());
+            calculator.setModel(CalculationModel.createCalculationModel("Rabinovitch"));
+            mForecastsResults.put("Rabinovitch", calculator.calculateAndReturnFullResult());
+        }
+    }
+
+    public Map<String, ForecastResult> getForecastsResults() {
+        return mForecastsResults;
     }
 
     public float[] getCallsMaturityForecast() {

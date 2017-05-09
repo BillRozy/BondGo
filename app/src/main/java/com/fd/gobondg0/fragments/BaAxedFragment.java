@@ -8,12 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fd.gobondg0.BaseApp;
+import com.fd.gobondg0.ForecastResult;
 import com.fd.gobondg0.ForecastView;
 import com.fd.gobondg0.PlotLegend;
 import com.fd.gobondg0.PlotLegendAdapter;
 import com.fd.gobondg0.R;
 import com.fd.gobondg0.ResultDetailedActivity;
 import com.fd.gobondg0.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class BaAxedFragment extends AxedFragment {
 
@@ -32,11 +37,49 @@ public class BaAxedFragment extends AxedFragment {
     }
 
     @Override
-    protected void prepareData() {
-        forecastVar = mContext.getBa();
-        prices = mContext.getPrices();
-        calls = mContext.getCallsBaForecast();
-        puts = mContext.getPutsBaForecast();
-        axisLegend = new String[]{"Basic Price, $", "Price, $"};
+    protected void prepareData(ForecastView graphicalCanvas, Map<String, ForecastResult> results) {
+        forecastVar = (float) BaseApp.getCalculator().getBasicPrice();
+        float[] Ts = new float[FORECAST_STEPS];
+        for(int i = 0; i < FORECAST_STEPS; i++){
+            Ts[i] = (forecastVar * 2)/FORECAST_STEPS * i;
+        }
+
+        ArrayList<float[]> arrays = new ArrayList<>();
+
+        for(String type : results.keySet()) {
+            if (results.get(type) != null) {
+                ForecastResult res = results.get(type);
+                arrays.add(res.mStockCalls);
+                arrays.add(res.mStockPuts);
+            }
+        }
+
+        float[] TsMaxMin = maxAndMin(Ts);
+        float min = min(arrays);
+        float max = max(arrays);
+        graphicalCanvas.prepareToDrawCurves(TsMaxMin[1], TsMaxMin[0], min,max);
+        graphicalCanvas.setAxisLegend("Basic Price, $", "Price, $");
     }
+
+    protected void buildForecast(ForecastView graphicalCanvas, PlotLegend legendary, Map<String, ForecastResult> results) {
+
+        float[] Ts = new float[FORECAST_STEPS];
+        for(int i = 0; i < FORECAST_STEPS; i++){
+            Ts[i] = (forecastVar * 2)/FORECAST_STEPS * i;
+        }
+
+        for(String type : results.keySet()) {
+            if (results.get(type) != null) {
+                ForecastResult res = results.get(type);
+                graphicalCanvas.createPolyline(Ts, res.mStockCalls, type + " Call", mColors.get(type)[0]);
+                graphicalCanvas.createPolyline(Ts, res.mStockPuts, type + " Put", mColors.get(type)[1]);
+                graphicalCanvas.createPoint(forecastVar, res.mCallPrice, 20 ,"Your Call", Color.BLUE);
+                graphicalCanvas.createPoint(forecastVar, res.mPutPrice, 10 ,"Your Put", Color.BLUE);
+            }
+        }
+
+        PlotLegendAdapter adapter = new PlotLegendAdapter(mContext, graphicalCanvas.generateLegendItems());
+        legendary.setAdapter(adapter);
+    }
+
 }

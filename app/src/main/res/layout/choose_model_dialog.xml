@@ -1,42 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
 
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Выберите модель для прогноза"
-        android:id="@+id/textView9"
-        android:gravity="center"
-        android:layout_weight="1" />
+        android:layout_height="match_parent"
+        android:layout_weight="3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Выберите модель для прогноза"
+            android:id="@+id/textView9"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_toStartOf="@+id/imageButton"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="#b4494949" />
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/closeChooseModelDialog"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="#1b0000"
+            android:adjustViewBounds="false"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="false"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_weight="2">
+        android:layout_weight="1"
+        android:background="#757575">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="BlackScholes"
+                android:id="@+id/bsChosenBtn"
+                android:background="#3e2723"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Merton"
+                android:id="@+id/mertonChosenBtn"
+                android:background="#3e2723"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Rabinovitch"
+                android:id="@+id/rabiChosenBtn"
+                android:background="#3e2723"
+                android:textColor="#ffffff" />
+        </LinearLayout>
 
         <Button
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="BlackScholes"
-            android:id="@+id/bsChosenBtn" />
-
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Merton"
-            android:id="@+id/mertonChosenBtn" />
-
-        <Button
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Rabinovitch"
-            android:id="@+id/rabiChosenBtn" />
+            android:text="Сравнительный"
+            android:id="@+id/comparisonChosenBtn"
+            android:background="#3e2723"
+            android:textColor="#ffffff" />
     </LinearLayout>
 
 </LinearLayout>

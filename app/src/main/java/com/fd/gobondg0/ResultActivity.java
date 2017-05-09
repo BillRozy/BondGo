@@ -15,10 +15,10 @@ public class ResultActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             double callPrice = extras.getDouble("call-price");
-            TextView callView = (TextView) findViewById(R.id.callOptionPrice);
+            TextView callView = (TextView) findViewById(R.id.bsCallOptionPrice);
             callView.setText(callPrice + "");
             double putPrice = extras.getDouble("put-price");
-            TextView putView = (TextView) findViewById(R.id.putOptionPrice);
+            TextView putView = (TextView) findViewById(R.id.bsPutOptionPrice);
             putView.setText(putPrice + "");
         }
     }

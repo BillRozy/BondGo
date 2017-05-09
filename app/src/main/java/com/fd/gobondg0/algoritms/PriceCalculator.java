@@ -1,6 +1,8 @@
 package com.fd.gobondg0.algoritms;
 
 
+import com.fd.gobondg0.ForecastResult;
+
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class PriceCalculator implements ArgsStore{
     private double mVolatility = 0;
     private double mProfitRate = 0.05;
     private double mDividentsYield = 0.001;
-    private double mKr = 2;
+    private double mKr = 1;
     private double mMur = 0.001;
     private double mSigmar = 0.1;
     private double mRo = 0.2;
@@ -35,9 +37,26 @@ public class PriceCalculator implements ArgsStore{
     }
 
     public void performCalculation(int type){
-       float[] res = mCurrentModel.calculateParity(type);
+       float[] res = mCurrentModel.calculateParity();
         mCallPrice = res[0];
         mPutPrice = res[1];
+    }
+
+    public ForecastResult calculateAndReturnFullResult(){
+        ForecastResult res = new ForecastResult();
+        performCalculation(PriceCalculator.FOR_MATURITY);
+        ArrayList<float[]> forecastMatur = calculateForecast(0, 2 * mMaturity, 100, PriceCalculator.FOR_MATURITY);
+        ArrayList<float[]> forecastVola = calculateForecast(0, 2 * mVolatility, 100, PriceCalculator.FOR_VOLATILITY);
+        ArrayList<float[]> forecastBa = calculateForecast(0, 2 * mBasicPrice, 100, PriceCalculator.FOR_BASIC_PRICE);
+        res.mCallPrice = (float) mCallPrice;
+        res.mPutPrice = (float) mPutPrice;
+        res.mMaturityCalls = forecastMatur.get(0);
+        res.mMaturityPuts = forecastMatur.get(1);
+        res.mVolaCalls = forecastVola.get(0);
+        res.mVolaPuts = forecastVola.get(1);
+        res.mStockCalls = forecastBa.get(0);
+        res.mStockPuts = forecastBa.get(1);
+        return res;
     }
 
 
@@ -140,5 +159,10 @@ public class PriceCalculator implements ArgsStore{
 
     public double getRo() {
         return mRo;
+    }
+
+    public void setModel(CalculationModel model){
+        mCurrentModel = model;
+        mCurrentModel.setArgsStore(this);
     }
 }

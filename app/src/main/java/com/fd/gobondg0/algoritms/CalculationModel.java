@@ -4,14 +4,16 @@ package com.fd.gobondg0.algoritms;
 public abstract class CalculationModel {
 
 
-    public static double MARKET_RISK_RATE = 1;
+    public static double MARKET_RISK_RATE = 0.05;
     protected ArgsStore mArgsStore;
 
     public void setArgsStore(ArgsStore store){
         mArgsStore = store;
     }
 
-    abstract public float[] calculateParity(int type) throws NullPointerException;
+    protected float[] calculateParity() throws NullPointerException{
+        return calculateParity(mArgsStore.getMaturity(), PriceCalculator.FOR_MATURITY);
+    }
 
     abstract public float[] calculateParity(double T, int type) throws NullPointerException;
 

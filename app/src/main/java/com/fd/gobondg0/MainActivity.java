@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,8 +21,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -89,29 +94,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ForecastEntity current = mForecastsAdapter.getForecastItem(position - 1);
-        CalculationModel bs = CalculationModel.createCalculationModel(current.getType());
-        PriceCalculator pc = new PriceCalculator(bs);
+        PriceCalculator pc = BaseApp.getCalculator();
         pc.setMaturity(current.getMaturity());
         pc.setVolatility(current.getVolatility());
         pc.setBasicPrice(current.getBasicPrice());
         pc.setStrikePrice(current.getStrikePrice());
         pc.setProfitRate(current.getInterestRate());
-        pc.performCalculation(PriceCalculator.FOR_MATURITY);
-        ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
-        ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);
-        ArrayList<float[]> forecastBa = pc.calculateForecast(0, 2 * pc.getBasicPrice(), 100, PriceCalculator.FOR_BASIC_PRICE);
+//        pc.performCalculation(PriceCalculator.FOR_MATURITY);
+//        ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
+//        ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);
+//        ArrayList<float[]> forecastBa = pc.calculateForecast(0, 2 * pc.getBasicPrice(), 100, PriceCalculator.FOR_BASIC_PRICE);
         Intent resIntent = new Intent(MainActivity.this, ResultDetailedActivity.class);
-        resIntent.putExtra("call-price", (float) pc.getCallPrice());
-        resIntent.putExtra("put-price", (float) pc.getPutPrice());
-        resIntent.putExtra("call-maturity-forecast", forecastMatur.get(0));
-        resIntent.putExtra("put-maturity-forecast", forecastMatur.get(1));
-        resIntent.putExtra("call-vola-forecast", forecastVola.get(0));
-        resIntent.putExtra("put-vola-forecast", forecastVola.get(1));
-        resIntent.putExtra("call-ba-forecast", forecastBa.get(0));
-        resIntent.putExtra("put-ba-forecast", forecastBa.get(1));
-        resIntent.putExtra("maturity", (float) pc.getMaturity());
-        resIntent.putExtra("volatility", (float) pc.getVolatility());
-        resIntent.putExtra("ba", (float) pc.getBasicPrice());
+        resIntent.putExtra("forecast-type", current.getType());
+//        resIntent.putExtra("call-price", (float) pc.getCallPrice());
+//        resIntent.putExtra("put-price", (float) pc.getPutPrice());
+//        resIntent.putExtra("call-maturity-forecast", forecastMatur.get(0));
+//        resIntent.putExtra("put-maturity-forecast", forecastMatur.get(1));
+//        resIntent.putExtra("call-vola-forecast", forecastVola.get(0));
+//        resIntent.putExtra("put-vola-forecast", forecastVola.get(1));
+//        resIntent.putExtra("call-ba-forecast", forecastBa.get(0));
+//        resIntent.putExtra("put-ba-forecast", forecastBa.get(1));
+//        resIntent.putExtra("maturity", (float) pc.getMaturity());
+//        resIntent.putExtra("volatility", (float) pc.getVolatility());
+//        resIntent.putExtra("ba", (float) pc.getBasicPrice());
         startActivity(resIntent);
     }
 
@@ -219,6 +224,8 @@ public class MainActivity extends AppCompatActivity
         Button bsBtn = (Button) dialog.findViewById(R.id.bsChosenBtn);
         Button mertonBtn = (Button) dialog.findViewById(R.id.mertonChosenBtn);
         Button rabiBtn = (Button) dialog.findViewById(R.id.rabiChosenBtn);
+        Button compareBtn = (Button) dialog.findViewById(R.id.comparisonChosenBtn);
+        ImageButton closeBtn = (ImageButton) dialog.findViewById(R.id.closeChooseModelDialog);
         final Intent starterCalculator = new Intent(MainActivity.this, CalculatorActivity.class);
         // if button is clicked, close the custom dialog
         bsBtn.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +256,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        compareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                starterCalculator.putExtra("model", "Triple");
+                dialog.dismiss();
+                startActivity(starterCalculator);
+            }
+        });
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+//        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
 }

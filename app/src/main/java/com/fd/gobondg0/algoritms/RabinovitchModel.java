@@ -8,11 +8,6 @@ public class RabinovitchModel extends CalculationModel {
     }
 
     @Override
-    public float[] calculateParity(int type) throws NullPointerException{
-        return calculateParity(mArgsStore.getMaturity(), type);
-    }
-
-    @Override
     public float[] calculateParity(double T, int type) throws NullPointerException{
         if(mArgsStore != null) {
             double tau = mArgsStore.getMaturity();
@@ -38,18 +33,14 @@ public class RabinovitchModel extends CalculationModel {
             double sigmar = mArgsStore.getSigmar();
             double ro = mArgsStore.getRo();
 
-
-            double k = mur + sigmar * MARKET_RISK_RATE / kr - Math.pow(sigmar/kr, 2)/kr;
-            double B = (1 - Math.exp(-kr * tau))/kr;
-            double A = Math.exp(k * (B - tau) - Math.pow(sigmar * B / 2, 2) / 2);
-            double P = A * Math.exp(-r0 * B);
-
-            double Tfun = vola * vola * tau + (tau - 2 * B + (1 - Math.exp(-2 * kr * tau))/2*kr) * Math.pow(sigmar/kr, 2) - 2 * ro * vola * (tau - B) * sigmar/kr;
-
-
-
-            double d1 = (Math.log(ba/s * P) + Tfun/2)/Math.sqrt(Tfun);
+            double B = (1 - Math.exp(- (kr * tau)))/kr;
+            double k = mur + sigmar * MARKET_RISK_RATE / kr - Math.pow(sigmar/kr, 2)/2;
+            double A = Math.exp(k * (B - tau) - Math.pow(sigmar * B / 2, 2)/kr);
+            double P = A * Math.exp(- (r0 * B));
+            double Tfun = (vola * vola * tau) + (tau - 2 * B + (1 - Math.exp(-2 * kr * tau)/ (2 * kr))) * Math.pow(sigmar/kr, 2) - 2 * ro * vola * (tau - B) * sigmar/kr;
+            double d1 = (Math.log((ba/s) * P) + Tfun/2)/Math.sqrt(Tfun);
             double d2 = d1 - Math.sqrt(Tfun);
+
             double nD1 = PriceCalculator.getStandRaspObr(d1);
             double nD2 = PriceCalculator.getStandRaspObr(d2);
             double nD11 = PriceCalculator.getStandRaspObr(-d1);
