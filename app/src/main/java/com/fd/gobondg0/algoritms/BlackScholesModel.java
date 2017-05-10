@@ -3,11 +3,6 @@ package com.fd.gobondg0.algoritms;
 public class BlackScholesModel extends CalculationModel {
 
     @Override
-    public void setArgsStore(ArgsStore store) {
-        mArgsStore = store;
-    }
-
-    @Override
     public float[] calculateParity(double T, int type) throws NullPointerException{
         if(mArgsStore != null) {
             double t = mArgsStore.getMaturity();
