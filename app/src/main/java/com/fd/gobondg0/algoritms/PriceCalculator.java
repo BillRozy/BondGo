@@ -81,12 +81,11 @@ public class PriceCalculator implements ArgsStore{
     }
 
     public void applyForecastEntity(ForecastEntity entity){
-        mBasicPrice = entity.getBasicPrice();
-        mStrikePrice = entity.getStrikePrice();
-        mMaturity = entity.getMaturity();
-        mVolatility = entity.getVolatility();
-        mProfitRate = entity.getInterestRate();
-        mDividentsYield = entity.getDividentsYield();
+        setBasicPrice(entity.getBasicPrice());
+        setStrikePrice(entity.getStrikePrice());
+        setMaturity(entity.getMaturity());
+        setVolatility(entity.getVolatility());
+        setProfitRate(entity.getInterestRate());
     }
 
     @Override

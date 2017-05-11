@@ -8,7 +8,7 @@
             android:title="Новый прогноз" />
         <item
             android:id="@+id/forecast_history"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_delete_forever_black_24dp"
             android:title="Очистить историю" />
         <item
             android:id="@+id/app_settings"
