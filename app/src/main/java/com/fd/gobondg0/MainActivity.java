@@ -95,28 +95,9 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         ForecastEntity current = mForecastsAdapter.getForecastItem(position - 1);
         PriceCalculator pc = BaseApp.getCalculator();
-        pc.setMaturity(current.getMaturity());
-        pc.setVolatility(current.getVolatility());
-        pc.setBasicPrice(current.getBasicPrice());
-        pc.setStrikePrice(current.getStrikePrice());
-        pc.setProfitRate(current.getInterestRate());
-//        pc.performCalculation(PriceCalculator.FOR_MATURITY);
-//        ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
-//        ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);
-//        ArrayList<float[]> forecastBa = pc.calculateForecast(0, 2 * pc.getBasicPrice(), 100, PriceCalculator.FOR_BASIC_PRICE);
+        pc.applyForecastEntity(current);
         Intent resIntent = new Intent(MainActivity.this, ResultDetailedActivity.class);
         resIntent.putExtra("forecast-type", current.getType());
-//        resIntent.putExtra("call-price", (float) pc.getCallPrice());
-//        resIntent.putExtra("put-price", (float) pc.getPutPrice());
-//        resIntent.putExtra("call-maturity-forecast", forecastMatur.get(0));
-//        resIntent.putExtra("put-maturity-forecast", forecastMatur.get(1));
-//        resIntent.putExtra("call-vola-forecast", forecastVola.get(0));
-//        resIntent.putExtra("put-vola-forecast", forecastVola.get(1));
-//        resIntent.putExtra("call-ba-forecast", forecastBa.get(0));
-//        resIntent.putExtra("put-ba-forecast", forecastBa.get(1));
-//        resIntent.putExtra("maturity", (float) pc.getMaturity());
-//        resIntent.putExtra("volatility", (float) pc.getVolatility());
-//        resIntent.putExtra("ba", (float) pc.getBasicPrice());
         startActivity(resIntent);
     }
 

@@ -1,6 +1,7 @@
 package com.fd.gobondg0.algoritms;
 
 
+import com.fd.gobondg0.ForecastEntity;
 import com.fd.gobondg0.ForecastResult;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
@@ -77,6 +78,15 @@ public class PriceCalculator implements ArgsStore{
         forecast.add(puts);
 
         return forecast;
+    }
+
+    public void applyForecastEntity(ForecastEntity entity){
+        mBasicPrice = entity.getBasicPrice();
+        mStrikePrice = entity.getStrikePrice();
+        mMaturity = entity.getMaturity();
+        mVolatility = entity.getVolatility();
+        mProfitRate = entity.getInterestRate();
+        mDividentsYield = entity.getDividentsYield();
     }
 
     @Override
