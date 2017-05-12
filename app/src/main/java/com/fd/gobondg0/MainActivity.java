@@ -159,7 +159,8 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "История очищена успешно", Toast.LENGTH_SHORT).show();
             }
         } else if (id == R.id.app_settings) {
-
+            Intent starterSettings = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(starterSettings);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -200,6 +201,7 @@ public class MainActivity extends AppCompatActivity
     public void chooseModelDialog(){
         // custom dialog
         final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.choose_model_dialog);
 //        dialog.setTitle("Выберите модель:");
 

@@ -7,4 +7,11 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_result_detailed">ResultDetailedActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="dynamic_correlation_enabled">Использовать динамическую корреляцию</string>
+    <string name="dynamic_correlation_enabled_sum">Использование динамической корреляции не поддерживается в текущей версии приложения</string>
+    <string name="dynamic_correlation_sum">Использование динамической корреляции не поддерживается в текущей версии приложения</string>
+    <string name="profit_rate_volatility">Волатильность ставки доходности</string>
+    <string name="starting_profit_rate">Стартовая ставка доходности</string>
+    <string name="instant_interest_profit_rate">Мгновенная ставка доходности</string>
+    <string name="rabinovitch_profit_rate_modifier">Модификатор "mean-reverse" в модели Рабиновича</string>
 </resources>

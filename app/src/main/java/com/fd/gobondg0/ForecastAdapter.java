@@ -1,6 +1,7 @@
 package com.fd.gobondg0;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,12 @@ class ForecastAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             view = lInflater.inflate(R.layout.forecast_list_item, parent, false);
+        }
+
+        if(getCount() > 3){
+            if(position % 2 != 0 && position != 0){
+                view.setBackgroundColor(Color.parseColor("#DDDDDD"));
+            }
         }
 
         ForecastEntity item = getForecastItem(position);

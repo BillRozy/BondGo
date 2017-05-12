@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:background="@color/primary_material_dark">
 
         <TextView
             android:layout_width="match_parent"
@@ -28,13 +29,14 @@
             android:layout_height="50dp"
             android:id="@+id/closeChooseModelDialog"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:background="#1b0000"
             android:adjustViewBounds="false"
             android:layout_alignParentTop="false"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="false"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:background="@android:color/transparent"
+            android:scaleType="centerCrop" />
     </RelativeLayout>
 
     <LinearLayout

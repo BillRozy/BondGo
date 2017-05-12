@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <CheckBoxPreference
+        android:key="dynamic_correlation_enabled"
+        android:title="@string/dynamic_correlation_enabled"
+        android:summary="@string/dynamic_correlation_sum"
+        android:defaultValue="false"
+        android:enabled="false"/>
+    <EditTextPreference
+        android:key="profit_rate_volatility"
+        android:title="@string/profit_rate_volatility"
+        android:defaultValue="10" />
+    <EditTextPreference
+        android:key="starting_profit_rate"
+        android:title="@string/starting_profit_rate"
+        android:defaultValue="5" />
+    <EditTextPreference
+        android:key="instant_interest_profit_rate"
+        android:title="@string/instant_interest_profit_rate"
+        android:defaultValue="0.1" />
+    <EditTextPreference
+        android:key="rabinovitch_profit_rate_modifier"
+        android:title="@string/rabinovitch_profit_rate_modifier"
+        android:defaultValue="1" />
+</PreferenceScreen>
