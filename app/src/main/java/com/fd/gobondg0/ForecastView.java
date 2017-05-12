@@ -165,10 +165,10 @@ public class ForecastView extends View{
         for(int i = 1; i < INTERVALS; i++){
             // draw x axis interval
             canvas.drawLine(PADDING + i * xStep, viewHeight -  PADDING - INTERVAL_SIZE/2, PADDING + i * xStep, viewHeight - PADDING + INTERVAL_SIZE/2, mAxisPaint);
-            canvas.drawText(String.format("%.1f", mXIntervals[i]),PADDING + i * xStep - TEXT_SIZE/2, viewHeight - PADDING + INTERVAL_SIZE / 2 + TEXT_SIZE * 2, mTextPaint);
+            canvas.drawText(String.format("%.2f", mXIntervals[i]),PADDING + i * xStep - TEXT_SIZE/2, viewHeight - PADDING + INTERVAL_SIZE / 2 + TEXT_SIZE * 2, mTextPaint);
             // draw y axis interval
             canvas.drawLine(PADDING - INTERVAL_SIZE/2, viewHeight -  PADDING - i * yStep, PADDING + INTERVAL_SIZE/2,viewHeight - PADDING - i * yStep, mAxisPaint);
-            canvas.drawText(String.format("%.1f", mYIntervals[i]),PADDING - INTERVAL_SIZE/2  - TEXT_SIZE * 4, viewHeight -  PADDING - i * yStep - TEXT_SIZE/2, mTextPaint);
+            canvas.drawText(String.format("%.2f", mYIntervals[i]),PADDING - INTERVAL_SIZE/2  - TEXT_SIZE * 4, viewHeight -  PADDING - i * yStep - TEXT_SIZE/2, mTextPaint);
         }
     }
 

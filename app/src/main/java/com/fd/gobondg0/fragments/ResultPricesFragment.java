@@ -82,7 +82,7 @@ public class ResultPricesFragment extends ResultDetailedActivity.ResultFragment 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                view.setText(String.format("%.1f", (Float)animation.getAnimatedValue()));
+                view.setText(String.format("%.2f", (Float)animation.getAnimatedValue()));
             }
         });
         animator.start();

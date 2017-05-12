@@ -33,23 +33,23 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
                     ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE + FLOAT_TYPE + COMMA_SEP +
                     ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE + FLOAT_TYPE + COMMA_SEP +
                     ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD + FLOAT_TYPE +
-            " );";
+                    " );";
     private static final String SQL_CREATE_CURVE_TABLE =
             "CREATE TABLE " + ForecastReaderContract.CurveEntry.TABLE_NAME + " (" +
-            ForecastReaderContract.CurveEntry._ID + " INTEGER PRIMARY KEY," +
-            ForecastReaderContract.CurveEntry.CURVE_NAME + TEXT_TYPE + COMMA_SEP +
-            ForecastReaderContract.CurveEntry.CURVE_COLOR + TEXT_TYPE + COMMA_SEP +
-            ForecastReaderContract.CurveEntry.CURVE_WIDTH + FLOAT_TYPE + COMMA_SEP +
-            ForecastReaderContract.CurveEntry.CURVE_TIMESTAMP + INT_TYPE + COMMA_SEP +
-            ForecastReaderContract.CurveEntry.CURVE_X_ARRAY + TEXT_TYPE + COMMA_SEP +
-            ForecastReaderContract.CurveEntry.CURVE_Y_ARRAY + TEXT_TYPE +
-            " )";
+                    ForecastReaderContract.CurveEntry._ID + " INTEGER PRIMARY KEY," +
+                    ForecastReaderContract.CurveEntry.CURVE_NAME + TEXT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.CurveEntry.CURVE_COLOR + TEXT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.CurveEntry.CURVE_WIDTH + FLOAT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.CurveEntry.CURVE_TIMESTAMP + INT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.CurveEntry.CURVE_X_ARRAY + TEXT_TYPE + COMMA_SEP +
+                    ForecastReaderContract.CurveEntry.CURVE_Y_ARRAY + TEXT_TYPE +
+                    " )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + ForecastReaderContract.ForecastEntry.TABLE_NAME + " ; \n" +
                     "DROP TABLE IF EXISTS " + ForecastReaderContract.CurveEntry.TABLE_NAME + " ; \n";
 
-    public ForecastsReaderDbHelper(Context context){
+    public ForecastsReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -71,29 +71,56 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public void seed(SQLiteDatabase db){
+    public void seed(SQLiteDatabase db) {
 
 // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
+        ContentValues[] valuesArr = new ContentValues[4];
+        valuesArr[0] = new ContentValues();
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, "Example 1");
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_TYPE, "BS");
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP, "2017-05-05 21:17:00");
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY, 364);
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, 20.1f);
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, 80);
+        valuesArr[0].put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, 100);
 
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, "Example 1");
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_TYPE, "BS");
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP, "2017-05-05 21:17:00");
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY, 364);
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, 20.1f);
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, 80);
-        values.put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, 100);
+        valuesArr[1] = new ContentValues();
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, "Example 2");
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_TYPE, "Merton");
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP, "2017-05-05 21:18:00");
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY, 364);
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, 20.1f);
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, 80);
+        valuesArr[1].put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, 100);
 
-// Insert the new row, returning the primary key value of the new row
-        long newRowId;
-        newRowId = db.insert(
-                ForecastReaderContract.ForecastEntry.TABLE_NAME,
-                null,
-                values);
-        System.out.println("I seed my seeds! " + newRowId);
+        valuesArr[2] = new ContentValues();
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, "Example 3");
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_TYPE, "Rabinovitch");
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP, "2017-05-05 21:19:00");
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY, 364);
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, 20.1f);
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, 80);
+        valuesArr[2].put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, 100);
+
+        valuesArr[3] = new ContentValues();
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, "Example 4");
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_TYPE, "Triple");
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP, "2017-05-05 21:20:00");
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_MATURITY, 364);
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY, 20.1f);
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_BASIC_PRICE, 80);
+        valuesArr[3].put(ForecastReaderContract.ForecastEntry.FORECAST_STRIKE_PRICE, 100);
+
+        // Insert the new row, returning the primary key value of the new row
+        for (ContentValues values : valuesArr) {
+            db.insert(
+                    ForecastReaderContract.ForecastEntry.TABLE_NAME,
+                    null,
+                    values);
+        }
     }
 
-    public static ArrayList<ForecastEntity> fetchForecastEntities(SQLiteDatabase db){
+    public static ArrayList<ForecastEntity> fetchForecastEntities(SQLiteDatabase db) {
         ArrayList<ForecastEntity> res = new ArrayList<>();
         String[] projection = {
                 ForecastReaderContract.ForecastEntry._ID,
@@ -122,7 +149,7 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
                 sortOrder                                 // The sort order
         );
 
-        while(c.moveToNext()){
+        while (c.moveToNext()) {
             long itemId = c.getLong(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry._ID));
             String name = c.getString(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_NAME));
             String type = c.getString(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_TYPE));
@@ -133,12 +160,12 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
             float vola = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_VOLATILITY));
             Float r = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_INTEREST_RATE));
             Float q = c.getFloat(c.getColumnIndexOrThrow(ForecastReaderContract.ForecastEntry.FORECAST_DIVIDENDS_YIELD));
-            res.add(new ForecastEntity(name,type,date, vola, t ,ba, s, r, q));
+            res.add(new ForecastEntity(name, type, date, vola, t, ba, s, r, q));
         }
         return res;
     }
 
-    static public void saveForecastEntity(ForecastEntity entity, SQLiteDatabase db){
+    static public void saveForecastEntity(ForecastEntity entity, SQLiteDatabase db) {
 
         ContentValues values = new ContentValues();
         values.put(ForecastReaderContract.ForecastEntry.FORECAST_NAME, entity.getName());
@@ -160,16 +187,16 @@ public class ForecastsReaderDbHelper extends SQLiteOpenHelper {
         System.out.println("Put new forecast in db " + newRowId);
     }
 
-    static public boolean deleteForecastEntry(ForecastEntity entity, SQLiteDatabase db){
+    static public boolean deleteForecastEntry(ForecastEntity entity, SQLiteDatabase db) {
         // Define 'where' part of query.
         String selection = ForecastReaderContract.ForecastEntry.FORECAST_TIMESTAMP + " LIKE ?";
         // Specify arguments in placeholder order.
-        String[] selectionArgs = { String.valueOf(entity.getDate()) };
+        String[] selectionArgs = {String.valueOf(entity.getDate())};
         // Issue SQL statement.
         return (db.delete(ForecastReaderContract.ForecastEntry.TABLE_NAME, selection, selectionArgs) > 0);
     }
 
-    static public boolean deleteAllForecastEntries(SQLiteDatabase db){
+    static public boolean deleteAllForecastEntries(SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + ForecastReaderContract.ForecastEntry.TABLE_NAME);
         return true;
     }

@@ -19,7 +19,6 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_toStartOf="@+id/imageButton"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:background="#b4494949" />
@@ -39,54 +38,66 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
         android:layout_weight="1"
-        android:background="#757575">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center">
-
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="BlackScholes"
-                android:id="@+id/bsChosenBtn"
-                android:background="#3e2723"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Merton"
-                android:id="@+id/mertonChosenBtn"
-                android:background="#3e2723"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textColor="#ffffff" />
-
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="Rabinovitch"
-                android:id="@+id/rabiChosenBtn"
-                android:background="#3e2723"
-                android:textColor="#ffffff" />
-        </LinearLayout>
+        android:padding="5dp">
 
         <Button
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="BlackScholes"
+            android:id="@+id/bsChosenBtn"
+            android:background="@drawable/clickable_pad_button"
+            android:textColor="#ffffff"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="5dp"
+            android:layout_height="match_parent"></FrameLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Merton"
+            android:id="@+id/mertonChosenBtn"
+            android:background="@drawable/clickable_pad_button"
+            android:textColor="#ffffff"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="5dp"
+            android:layout_height="match_parent"></FrameLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Rabinovitch"
+            android:id="@+id/rabiChosenBtn"
+            android:background="@drawable/clickable_pad_button"
+            android:textColor="#ffffff"
+            android:layout_alignTop="@+id/comparisonChosenBtn"
+            android:layout_toStartOf="@+id/comparisonChosenBtn"
+            android:layout_weight="1" />
+
+        <FrameLayout
+            android:layout_width="5dp"
+            android:layout_height="match_parent"></FrameLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:text="Сравнительный"
             android:id="@+id/comparisonChosenBtn"
-            android:background="#3e2723"
-            android:textColor="#ffffff" />
+            android:background="@drawable/clickable_pad_button"
+            android:textColor="#ffffff"
+            android:layout_alignTop="@+id/mertonChosenBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

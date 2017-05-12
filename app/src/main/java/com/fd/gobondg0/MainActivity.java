@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.choose_model_dialog);
-        dialog.setTitle("Выберите модель:");
+//        dialog.setTitle("Выберите модель:");
 
         // set the custom dialog components - text, image and button
 
@@ -254,9 +256,14 @@ public class MainActivity extends AppCompatActivity
         });
 
         dialog.show();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int height = metrics.heightPixels;
+
         Window window = dialog.getWindow();
-        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, height/2);
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.dimAmount=0.9f;
+        dialog.getWindow().setAttributes(lp);
     }
 
 }

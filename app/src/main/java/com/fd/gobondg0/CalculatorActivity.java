@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fd.gobondg0.algoritms.BlackScholesModel;
 import com.fd.gobondg0.algoritms.CalculationModel;
@@ -46,6 +47,29 @@ public class CalculatorActivity extends Activity {
         mRateField = (EditText) findViewById(R.id.rateOfProftField);
         mGoBond = (Button) findViewById(R.id.submitForecastButton);
 
+        TextView newForecast = (TextView) findViewById(R.id.forecastTitle);
+        TextView aboutForecast = (TextView) findViewById(R.id.forecastDetails);
+
+        switch (forecastType){
+            case "BS":
+                newForecast.setText("Новый прогноз по Блэку-Шоулзу");
+                aboutForecast.setText("Корреляция не используется, дивиденды с непрерывным доходом не учитываются.");
+                break;
+            case "Merton":
+                newForecast.setText("Новый прогноз по Мертону");
+                aboutForecast.setText("Динамическая корреляция не используется, дивиденды с непрерывным доходом учитываются.");
+                break;
+            case "Rabinovitch":
+                newForecast.setText("Новый прогноз по Рабиновичу");
+                aboutForecast.setText("Используются стохастические процентные ставки по Васичеку");
+                break;
+            case "Triple":
+                newForecast.setText("Новый сравнительный прогноз");
+                aboutForecast.setText("Используется для сравнения результатов прогнозирования в разных моделях ценообразования");
+                break;
+        }
+
+
         mGoBond.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,30 +85,10 @@ public class CalculatorActivity extends Activity {
                 String dateString = fmt.format(new Date());
                 ForecastEntity entity = new ForecastEntity("Users", forecastType, dateString, (float) vola, (float) t, (float) ba, (float) s, (float) r, (float) q);
                 ForecastsReaderDbHelper.saveForecastEntity(entity, db);
-//                CalculationModel bs = CalculationModel.createCalculationModel(forecastType);
                 PriceCalculator pc = BaseApp.getCalculator();
-                pc.setMaturity(t);
-                pc.setVolatility(vola);
-                pc.setBasicPrice(ba);
-                pc.setStrikePrice(s);
-                pc.setProfitRate(r);
-//                pc.performCalculation(PriceCalculator.FOR_MATURITY);
-//                ArrayList<float[]> forecastMatur = pc.calculateForecast(0, 2 * pc.getMaturity(), 100, PriceCalculator.FOR_MATURITY);
-//                ArrayList<float[]> forecastVola = pc.calculateForecast(0, 2 * pc.getVolatility(), 100, PriceCalculator.FOR_VOLATILITY);
-//                ArrayList<float[]> forecastBa = pc.calculateForecast(0, 2 * pc.getBasicPrice(), 100, PriceCalculator.FOR_BASIC_PRICE);
+                pc.applyForecastEntity(entity);
                 Intent resIntent = new Intent(CalculatorActivity.this, ResultDetailedActivity.class);
-                  resIntent.putExtra("forecast-type", forecastType);
-//                resIntent.putExtra("call-price", (float) pc.getCallPrice());
-//                resIntent.putExtra("put-price", (float) pc.getPutPrice());
-//                resIntent.putExtra("call-maturity-forecast", forecastMatur.get(0));
-//                resIntent.putExtra("put-maturity-forecast", forecastMatur.get(1));
-//                resIntent.putExtra("call-vola-forecast", forecastVola.get(0));
-//                resIntent.putExtra("put-vola-forecast", forecastVola.get(1));
-//                resIntent.putExtra("call-ba-forecast", forecastBa.get(0));
-//                resIntent.putExtra("put-ba-forecast", forecastBa.get(1));
-//                resIntent.putExtra("maturity", (float) pc.getMaturity());
-//                resIntent.putExtra("volatility", (float) pc.getVolatility());
-//                resIntent.putExtra("ba", (float) pc.getBasicPrice());
+                resIntent.putExtra("forecast-type", forecastType);
                 startActivity(resIntent);
             }
         });

@@ -45,23 +45,10 @@ public class ResultDetailedActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private float[] mResultedPrices = new float[2];
-    private float[] mCallsMaturityForecast;
-    private float[] mPutsMaturityForecast;
-    private float[] mCallsVolaForecast;
-    private float[] mPutsVolaForecast;
-    private float[] mCallsBaForecast;
-    private float[] mPutsBaForecast;
-    private float mMaturity;
-    private float mVolatility;
-    private float mBa;
     private Map<String, ForecastResult> mForecastsResults;
 
     public float[] getPrices(){
         return mResultedPrices;
-    }
-
-    public float getMaturity() {
-        return mMaturity;
     }
 
     @Override
@@ -86,19 +73,6 @@ public class ResultDetailedActivity extends AppCompatActivity {
         String forecastType = "BS";
         if (extras != null) {
             forecastType = extras.getString("forecast-type");
-//            float callPrice = extras.getFloat("call-price");
-//            mResultedPrices[0] = callPrice;
-//            float putPrice = extras.getFloat("put-price");
-//            mResultedPrices[1] = putPrice;
-//            mCallsMaturityForecast = extras.getFloatArray("call-maturity-forecast");
-//            mPutsMaturityForecast = extras.getFloatArray("put-maturity-forecast");
-//            mCallsVolaForecast = extras.getFloatArray("call-vola-forecast");
-//            mPutsVolaForecast = extras.getFloatArray("put-vola-forecast");
-//            mCallsBaForecast = extras.getFloatArray("call-ba-forecast");
-//            mPutsBaForecast = extras.getFloatArray("put-ba-forecast");
-//            mMaturity = extras.getFloat("maturity");
-//            mVolatility = extras.getFloat("volatility");
-//            mBa = extras.getFloat("ba");
         }
 
         PriceCalculator calculator = BaseApp.getCalculator();
@@ -119,37 +93,6 @@ public class ResultDetailedActivity extends AppCompatActivity {
         return mForecastsResults;
     }
 
-    public float[] getCallsMaturityForecast() {
-        return mCallsMaturityForecast;
-    }
-
-    public float[] getPutsMaturityForecast() {
-        return mPutsMaturityForecast;
-    }
-
-    public float[] getCallsVolaForecast() {
-        return mCallsVolaForecast;
-    }
-
-    public float[] getPutsVolaForecast() {
-        return mPutsVolaForecast;
-    }
-
-    public float[] getCallsBaForecast() {
-        return mCallsBaForecast;
-    }
-
-    public float[] getPutsBaForecast() {
-        return mPutsBaForecast;
-    }
-
-    public float getBa() {
-        return mBa;
-    }
-
-    public float getVolatility() {
-        return mVolatility;
-    }
 
     /**
      * A placeholder fragment containing a simple view.
