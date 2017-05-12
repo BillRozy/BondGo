@@ -15,7 +15,7 @@
         android:id="@+id/imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/cute_logo"
+        android:src="@drawable/stock_exchange_icon"
         android:scaleType="centerInside"
         android:layout_marginBottom="10dp" />
 
