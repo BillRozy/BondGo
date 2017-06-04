@@ -25,10 +25,10 @@ public class PriceCalculator implements ArgsStore{
     private double mVolatility = 0;
     private double mProfitRate = 0.05;
     private double mDividentsYield = 0.001;
-    private double mKr = 1;
-    private double mMur = 0.001;
-    private double mSigmar = 0.1;
-    private double mRo = 0.2;
+    private double mKr = 0.1;
+    private double mMur = 0.1;
+    private double mSigmar = 0.09;
+    private double mRo = 1;
 
     private CalculationModel mCurrentModel;
 
@@ -153,6 +153,10 @@ public class PriceCalculator implements ArgsStore{
     static double getStandRaspObr(double z){
         return new NormalDistribution().cumulativeProbability(z);
    }
+
+    static double getRandomGaussian(){
+        return new NormalDistribution(0,1).sample();
+    }
 
     public double getKr() {
         return mKr;

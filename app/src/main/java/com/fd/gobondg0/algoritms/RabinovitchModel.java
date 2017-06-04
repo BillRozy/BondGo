@@ -28,13 +28,15 @@ public class RabinovitchModel extends CalculationModel {
             double sigmar = mArgsStore.getSigmar();
             double ro = mArgsStore.getRo();
 
-            double B = (1 - Math.exp(- (kr * tau)))/kr;
-            double k = mur + sigmar * MARKET_RISK_RATE / kr - Math.pow(sigmar/kr, 2)/2;
-            double A = Math.exp(k * (B - tau) - Math.pow(sigmar * B / 2, 2)/kr);
-            double P = A * Math.exp(- (r0 * B));
-            double Tfun = (vola * vola * tau) + (tau - 2 * B + (1 - Math.exp(-2 * kr * tau)/ (2 * kr))) * Math.pow(sigmar/kr, 2) - 2 * ro * vola * (tau - B) * sigmar/kr;
-            double d1 = (Math.log((ba/s) * P) + Tfun/2)/Math.sqrt(Tfun);
-            double d2 = d1 - Math.sqrt(Tfun);
+            double e = PriceCalculator.getRandomGaussian();
+            double rt = mur + (r0 - mur) * Math.exp(- (kr * tau));// + (sigmar/Math.sqrt(2 * kr)) * Math.sqrt(1 - Math.exp(- (2 * kr * tau))) * PriceCalculator.getRandomGaussian();
+            double k = mur + sigmar * MARKET_RISK_RATE/kr - Math.pow((sigmar/kr),2)/2;
+            double B = (1 - Math.exp(-(kr * tau)))/ kr;
+            double A = Math.exp(k * (B - tau) - Math.pow((sigmar * B/ 2), 2)/kr);
+            double P = A * Math.exp(-(rt * B));
+            double Tfunc = vola * vola * tau + (tau - 2 * B + (1 - Math.exp(-(2 * kr * tau)))/(2 * kr)) * Math.pow(sigmar/kr,2) - 2 * ro * vola * (tau - B) * (sigmar / kr);
+            double d1 = (Math.log(ba/s * P) + Tfunc/2)/Math.sqrt(Tfunc);
+             double d2 = d1 - Math.sqrt(Tfunc);
 
             double nD1 = PriceCalculator.getStandRaspObr(d1);
             double nD2 = PriceCalculator.getStandRaspObr(d2);
