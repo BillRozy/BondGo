@@ -4,7 +4,7 @@ package com.fd.gobondg0.algoritms;
 public class MertonModel extends CalculationModel {
 
     @Override
-    public float[] calculateParity(double T, int type) throws NullPointerException{
+    public float[] calculateParity(double T, int type, int step) throws NullPointerException{
         if(mArgsStore != null) {
             double t = mArgsStore.getMaturity();
             double vola = mArgsStore.getVolatility();

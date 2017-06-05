@@ -13,4 +13,5 @@ public interface ArgsStore {
     double getMur();
     double getSigmar();
     double getRo();
+    double getRtInTime(int step);
 }

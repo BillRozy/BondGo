@@ -29,6 +29,7 @@ public class PriceCalculator implements ArgsStore{
     private double mMur = 0.1;
     private double mSigmar = 0.09;
     private double mRo = 1;
+    private double[] mRt = new double[100];
 
     private CalculationModel mCurrentModel;
 
@@ -45,6 +46,7 @@ public class PriceCalculator implements ArgsStore{
 
     public ForecastResult calculateAndReturnFullResult(){
         ForecastResult res = new ForecastResult();
+        mRt = calculateRt(mProfitRate, 2 * mMaturity, mKr, mMur, mSigmar, 100);
         performCalculation(PriceCalculator.FOR_MATURITY);
         ArrayList<float[]> forecastMatur = calculateForecast(0, 2 * mMaturity, 100, PriceCalculator.FOR_MATURITY);
         ArrayList<float[]> forecastVola = calculateForecast(0, 2 * mVolatility, 100, PriceCalculator.FOR_VOLATILITY);
@@ -69,7 +71,7 @@ public class PriceCalculator implements ArgsStore{
         float[] calls = new float[steps];
         float[] puts = new float[steps];
         for(int i = 0; i < steps; i++){
-            float[] res = mCurrentModel.calculateParity(startT + i * step, type);
+            float[] res = mCurrentModel.calculateParity(startT + i * step, type, i);
             calls[i] = res[0];
             puts[i] = res[1];
         }
@@ -177,5 +179,22 @@ public class PriceCalculator implements ArgsStore{
     public void setModel(CalculationModel model){
         mCurrentModel = model;
         mCurrentModel.setArgsStore(this);
+    }
+
+    public double getRtInTime(int step){
+        return mRt[step];
+    }
+
+    static private double[] calculateRt(double r0, double t, double meanreverse, double equlib, double vola, int steps){
+        double res[] = new double[steps];
+        double step = t/steps;
+        Random randomno = new Random();
+        res[0] = r0;
+        System.out.println("Rs!");
+        for(int i = 1; i < steps; i++){
+            res[i] = res[i-1] + meanreverse * (equlib - r0) * step + vola * randomno.nextGaussian() * Math.sqrt(step);
+            System.out.print(res[i] + "  ");
+        }
+        return res;
     }
 }

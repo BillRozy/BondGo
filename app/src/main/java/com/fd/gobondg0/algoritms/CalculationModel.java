@@ -12,10 +12,10 @@ public abstract class CalculationModel {
     }
 
     protected float[] calculateParity() throws NullPointerException{
-        return calculateParity(mArgsStore.getMaturity(), PriceCalculator.FOR_MATURITY);
+        return calculateParity(mArgsStore.getMaturity(), PriceCalculator.FOR_MATURITY, 49);
     }
 
-    abstract public float[] calculateParity(double T, int type) throws NullPointerException;
+    abstract public float[] calculateParity(double T, int type, int step) throws NullPointerException;
 
     static public CalculationModel createCalculationModel(String type){
         switch(type){

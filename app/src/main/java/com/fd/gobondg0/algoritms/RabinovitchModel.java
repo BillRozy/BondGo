@@ -2,8 +2,10 @@ package com.fd.gobondg0.algoritms;
 
 public class RabinovitchModel extends CalculationModel {
 
+    static private final double TIME_STEPS = 100;
+
     @Override
-    public float[] calculateParity(double T, int type) throws NullPointerException{
+    public float[] calculateParity(double T, int type, int step) throws NullPointerException{
         if(mArgsStore != null) {
             double tau = mArgsStore.getMaturity();
             double vola = mArgsStore.getVolatility();
@@ -29,7 +31,7 @@ public class RabinovitchModel extends CalculationModel {
             double ro = mArgsStore.getRo();
 
             double e = PriceCalculator.getRandomGaussian();
-            double rt = mur + (r0 - mur) * Math.exp(- (kr * tau));// + (sigmar/Math.sqrt(2 * kr)) * Math.sqrt(1 - Math.exp(- (2 * kr * tau))) * PriceCalculator.getRandomGaussian();
+            double rt = r0;//mArgsStore.getRtInTime(step);//mur + (r0 - mur) * Math.exp(- (kr * tau));// + (sigmar/Math.sqrt(2 * kr)) * Math.sqrt(1 - Math.exp(- (2 * kr * tau))) * PriceCalculator.getRandomGaussian();
             double k = mur + sigmar * MARKET_RISK_RATE/kr - Math.pow((sigmar/kr),2)/2;
             double B = (1 - Math.exp(-(kr * tau)))/ kr;
             double A = Math.exp(k * (B - tau) - Math.pow((sigmar * B/ 2), 2)/kr);
