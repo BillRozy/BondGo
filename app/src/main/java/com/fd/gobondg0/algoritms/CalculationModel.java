@@ -4,7 +4,7 @@ package com.fd.gobondg0.algoritms;
 public abstract class CalculationModel {
 
 
-    public static double MARKET_RISK_RATE = 0.05;
+    public static double MARKET_RISK_RATE = 0.2;
     protected ArgsStore mArgsStore;
 
     public void setArgsStore(ArgsStore store){
